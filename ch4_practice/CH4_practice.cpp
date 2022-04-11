@@ -1,6 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+//link list第一種定義方式//
+typedef struct list *listnode;//先type define指標和list
+struct list//因為前面已淨typedefine了,所以不用在typedefine一次
+{   int value;
+    listnode link;
+};
+
+//第二種方式//
 typedef struct Link_list
 {   int value;
     Link_list *node;
@@ -19,22 +27,28 @@ void series (Link_list *last,int value){
     last->node=ptr;//let last bloack point to current
 }
 
-void insert(Link_list *last,int value){
+void insert(Link_list *previos,int value){
     Link_list *ptr=create(value);
-    ptr->node=last->node;//let insert block point to last block point 
-    last->node=ptr;//let last block point to current block
+    if(previos!=0){
+    ptr->node=previos->node;//讓要insert的block指到,前一個block指的點 
+    previos->node=ptr;//把前一個block指的點,改成指向要insert的block
+    }
+    else{
+        ptr->node=NULL;
+        previos=ptr;
+    }
 }
 
 Link_list* deletes(Link_list *first,int value){
     Link_list *current,*previous,*ptr;
     current=first;
     previous=0;
-    while (current!=0&&current->value!=value)
+    while (current!=0&&current->value!=value)//traverse 整個link-list
     { previous=current;
       current=current->node;       
     }
     if (current==0){
-    printf("no element");//traversal完沒找到
+    printf("no element\n");//traversal完沒找到
     return first;
     }
     else if(current==first){//case 1
@@ -49,6 +63,13 @@ Link_list* deletes(Link_list *first,int value){
     } 
     }
 
+void printlist (Link_list *first){
+    for(;first!=NULL;first=first->node){
+        printf("%4d",first->value);
+    }
+    printf("\n");
+}
+
 
 
 int main(void)
@@ -62,14 +83,14 @@ int main(void)
      printf("%d\n",ptr->value) ;  
     }
 
-    first=deletes(first,86);
+    first=deletes(first,20);
 
     for (ptr=first;ptr!=NULL;ptr=ptr->node)
     {
      printf("%d\n",ptr->value) ;  
     }
-    
 
+    printlist(first);
 
     free(first);
     system("pause");
