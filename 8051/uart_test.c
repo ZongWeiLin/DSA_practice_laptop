@@ -1,4 +1,5 @@
 #include<regx51.h> 
+#include<LCM.h>
 #define led    P0 // 定義led的輸出位置  
 bit flag;	    // 宣告bit為位元(1 bit) 
 /****      主程式       ****/ 
